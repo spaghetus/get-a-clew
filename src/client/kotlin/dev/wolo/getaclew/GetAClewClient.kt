@@ -72,6 +72,10 @@ object GetAClewClient : ClientModInitializer {
         logger.debug("Find the last position in the clew line we have a path to")
         for (i in 0 ..< clewLine.size) {
             val clewPosition = clewLine[i]
+            if (Vec3d(clewPosition).distanceTo(Vec3d(position)) > 16.0) {
+                logger.debug("Too far away, ignore this one")
+                continue
+            }
             val clewTrace =
                     client.world?.raycast(
                             RaycastContext(
@@ -84,10 +88,6 @@ object GetAClewClient : ClientModInitializer {
                     )
                             ?: continue
             if (clewTrace.type == HitResult.Type.MISS) {
-                if (Vec3d(clewPosition).distanceTo(Vec3d(position)) > 16.0) {
-                    logger.debug("Too far away, ignore this one")
-                    continue
-                }
                 logger.debug(
                         "We can see this block! It should be the end of the clew line, and we don't"
                 )
