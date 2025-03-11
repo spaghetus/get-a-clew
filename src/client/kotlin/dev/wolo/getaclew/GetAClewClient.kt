@@ -66,8 +66,10 @@ object GetAClewClient : ClientModInitializer {
         }
         underground = true
         if (clewLine.isEmpty()) {
-            logger.debug("We're underground with no clew line, give up")
-            return
+            logger.debug("We're underground with no clew line, start one here anyway")
+            lastLitPosition = position
+            lastTrivialPosition = null
+            clewLine.add(position)
         }
         logger.debug("Find the last position in the clew line we have a path to")
         for (i in 0 ..< clewLine.size) {
